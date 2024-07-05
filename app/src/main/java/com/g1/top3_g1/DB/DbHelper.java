@@ -127,16 +127,16 @@ public class DbHelper extends SQLiteOpenHelper {
     public List<Employee> searchEmployees(String fullName, String hireDate, double salary) {
         List<Employee> employeeList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_EMPLOYEE + " WHERE ";
-
         List<String> conditions = new ArrayList<>();
         if (!fullName.isEmpty()) {
-            conditions.add(COLUMN_FULL_NAME + "='" + fullName + "'");
+            conditions.add(COLUMN_FULL_NAME + " LIKE '%" + fullName + "%'");
         }
         if (!hireDate.isEmpty()) {
             conditions.add(COLUMN_HIRE_DATE + "='" + hireDate + "'");
         }
-        conditions.add(COLUMN_SALARY + "=" + salary);
-
+        if(salary != 0.0) {
+            conditions.add(COLUMN_SALARY + "=" + salary);
+        }
         if (conditions.isEmpty()) {
             selectQuery = "SELECT * FROM " + TABLE_EMPLOYEE;
         } else {

@@ -19,6 +19,7 @@ import java.util.List;
 
 // MainActivity.java
 public class EmployeeActivity extends AppCompatActivity implements EmployeeView {
+
     private EditText fullNameEditText, hireDateEditText, salaryEditText;
     private Button addButton, searchButton;
     private RecyclerView recyclerView;
@@ -38,7 +39,11 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeView 
         searchButton = findViewById(R.id.button_search);
         recyclerView = findViewById(R.id.recycler_view);
 
-        presenter = new EmployeePresenterImpl(this, this);
+        presenter = new EmployeePresenterImpl(this, this); // Initialize presenter
+
+        adapter = new EmployeeAdapter(employeeList, this, presenter); // Pass presenter to adapter
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
 
         addButton.setOnClickListener(v -> {
             String fullName = fullNameEditText.getText().toString();
@@ -58,37 +63,34 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeView 
             presenter.searchEmployees(fullName, hireDate, salary);
         });
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new EmployeeAdapter(employeeList, this);
-        recyclerView.setAdapter(adapter);
-
-        presenter.getAllEmployees();
+        //presenter.getAllEmployees(); // Fetch initial data
     }
 
     @Override
     public void showEmployees(List<Employee> employees) {
         employeeList.clear();
         employeeList.addAll(employees);
-        adapter.notifyDataSetChanged();
+        adapter.updateData(employees);
     }
 
     @Override
     public void employeeAdded() {
         Toast.makeText(this, "Employee added successfully", Toast.LENGTH_SHORT).show();
-        presenter.getAllEmployees();
+        presenter.getAllEmployees(); // Refresh data after adding
     }
 
     @Override
     public void employeeUpdated() {
         Toast.makeText(this, "Employee updated successfully", Toast.LENGTH_SHORT).show();
-        presenter.getAllEmployees();
+        presenter.getAllEmployees(); // Refresh data after updating
     }
 
     @Override
     public void employeeDeleted() {
         Toast.makeText(this, "Employee deleted successfully", Toast.LENGTH_SHORT).show();
-        presenter.getAllEmployees();
+        presenter.getAllEmployees(); // Refresh data after deleting
     }
 }
+
 
 

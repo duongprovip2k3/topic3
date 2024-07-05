@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.g1.top3_g1.Model.Employee;
+import com.g1.top3_g1.Presenter.EmployeePresenter;
 import com.g1.top3_g1.R;
 
 import java.util.List;
@@ -17,10 +18,16 @@ import java.util.List;
 public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.EmployeeViewHolder> {
     private List<Employee> employeeList;
     private Context context;
+    private EmployeePresenter presenter;
 
     public EmployeeAdapter(List<Employee> employeeList, Context context) {
         this.employeeList = employeeList;
         this.context = context;
+    }
+    public EmployeeAdapter(List<Employee> employeeList, Context context, EmployeePresenter presenter) {
+        this.employeeList = employeeList;
+        this.context = context;
+        this.presenter = presenter;
     }
 
     @NonNull
@@ -38,17 +45,27 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
         holder.salaryTextView.setText(String.valueOf(employee.getSalary()));
 
         holder.editButton.setOnClickListener(v -> {
-            // Handle edit functionality
+            if (presenter != null) {
+                presenter.updateEmployee(employee);
+            }
         });
 
         holder.deleteButton.setOnClickListener(v -> {
-            // Handle delete functionality
+            if (presenter != null) {
+                presenter.deleteEmployee(employee);
+            }
         });
     }
 
     @Override
     public int getItemCount() {
         return employeeList.size();
+    }
+
+    public void updateData(List<Employee> employees) {
+        employeeList.clear();
+        employeeList.addAll(employees);
+        notifyDataSetChanged();
     }
 
     public static class EmployeeViewHolder extends RecyclerView.ViewHolder {
