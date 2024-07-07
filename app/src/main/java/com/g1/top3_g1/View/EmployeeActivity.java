@@ -27,19 +27,22 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeView 
     private EmployeePresenter presenter;
     private List<Employee> employeeList = new ArrayList<>();
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_employee);
-
+    private void bindingView(){
         fullNameEditText = findViewById(R.id.edit_text_full_name);
         hireDateEditText = findViewById(R.id.edit_text_hire_date);
         salaryEditText = findViewById(R.id.edit_text_salary);
         addButton = findViewById(R.id.button_add);
         searchButton = findViewById(R.id.button_search);
         recyclerView = findViewById(R.id.recycler_view);
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_employee);
 
-        presenter = new EmployeePresenterImpl(this, this); // Initialize presenter
+        bindingView();
+
+        presenter = new EmployeePresenterImpl(this,this);
 
         adapter = new EmployeeAdapter(employeeList, this, presenter); // Pass presenter to adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -63,7 +66,7 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeView 
             presenter.searchEmployees(fullName, hireDate, salary);
         });
 
-        //presenter.getAllEmployees(); // Fetch initial data
+        //presenter.getAllEmployees();
     }
 
     @Override

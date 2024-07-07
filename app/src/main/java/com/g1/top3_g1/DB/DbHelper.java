@@ -27,6 +27,7 @@ public class DbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    //khoi dong lan dau` se tao table
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_EMPLOYEE_TABLE = "CREATE TABLE " + TABLE_EMPLOYEE + "("
@@ -43,9 +44,8 @@ public class DbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // CRUD operations
 
-    // Add new employee
+    // them employee
     public void addEmployee(Employee employee) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -58,7 +58,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Get single employee by ID
+    //tim kiem
     public Employee getEmployee(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
 

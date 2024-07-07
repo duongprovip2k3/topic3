@@ -20,10 +20,6 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     private Context context;
     private EmployeePresenter presenter;
 
-    public EmployeeAdapter(List<Employee> employeeList, Context context) {
-        this.employeeList = employeeList;
-        this.context = context;
-    }
     public EmployeeAdapter(List<Employee> employeeList, Context context, EmployeePresenter presenter) {
         this.employeeList = employeeList;
         this.context = context;
