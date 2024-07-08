@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.g1.top3_g1.Model.Employee;
 import com.g1.top3_g1.Presenter.EmployeePresenter;
-import com.g1.top3_g1.Presenter.Implement;
+import com.g1.top3_g1.Presenter.PreImplement;
 import com.g1.top3_g1.R;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeView 
 
         bindingView();
 
-        presenter = new Implement(this, this);
+        presenter = new PreImplement(this, this);
 
         adapter = new EmployeeAdapter(employeeList, this, presenter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

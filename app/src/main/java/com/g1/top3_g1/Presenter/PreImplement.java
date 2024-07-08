@@ -9,11 +9,11 @@ import com.g1.top3_g1.View.EmployeeView;
 import java.util.Collections;
 import java.util.List;
 
-public class Implement implements EmployeePresenter {
+public class PreImplement implements EmployeePresenter {
     private EmployeeView view;
     private DB DB;
 
-    public Implement(EmployeeView view, Context context) {
+    public PreImplement(EmployeeView view, Context context) {
         this.view = view;
         this.DB = new DB(context);
     }
