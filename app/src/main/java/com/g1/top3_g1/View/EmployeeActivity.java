@@ -11,30 +11,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.g1.top3_g1.Model.Employee;
 import com.g1.top3_g1.Presenter.EmployeePresenter;
-import com.g1.top3_g1.Presenter.EmployeePresenterImpl;
+import com.g1.top3_g1.Presenter.Implement;
 import com.g1.top3_g1.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// MainActivity.java
 public class EmployeeActivity extends AppCompatActivity implements EmployeeView {
-
-    private EditText fullNameEditText, hireDateEditText, salaryEditText;
-    private Button addButton, searchButton;
+    private EditText edtFullName, edtHireDate, edtSalary;
+    private Button addBtn, searchBtn;
     private RecyclerView recyclerView;
     private EmployeeAdapter adapter;
     private EmployeePresenter presenter;
     private List<Employee> employeeList = new ArrayList<>();
 
-    private void bindingView(){
-        fullNameEditText = findViewById(R.id.edit_text_full_name);
-        hireDateEditText = findViewById(R.id.edit_text_hire_date);
-        salaryEditText = findViewById(R.id.edit_text_salary);
-        addButton = findViewById(R.id.button_add);
-        searchButton = findViewById(R.id.button_search);
+    private void bindingView() {
+        edtFullName = findViewById(R.id.edit_text_full_name);
+        edtHireDate = findViewById(R.id.edit_text_hire_date);
+        edtSalary = findViewById(R.id.edit_text_salary);
+        addBtn = findViewById(R.id.button_add);
+        searchBtn = findViewById(R.id.button_search);
         recyclerView = findViewById(R.id.recycler_view);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,31 +41,52 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeView 
 
         bindingView();
 
-        presenter = new EmployeePresenterImpl(this,this);
+        presenter = new Implement(this, this);
 
-        adapter = new EmployeeAdapter(employeeList, this, presenter); // Pass presenter to adapter
+        adapter = new EmployeeAdapter(employeeList, this, presenter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
 
-        addButton.setOnClickListener(v -> {
-            String fullName = fullNameEditText.getText().toString();
-            String hireDate = hireDateEditText.getText().toString();
-            double salary = Double.parseDouble(salaryEditText.getText().toString());
+        addBtn.setOnClickListener(v -> {
+            String fullName = edtFullName.getText().toString();
+            String hireDate = edtHireDate.getText().toString();
+            String salaryStr = edtSalary.getText().toString();
+            double salary = 0;
 
-            Employee employee = new Employee(0, fullName, hireDate, salary);
-            presenter.addEmployee(employee);
+            if (fullName.isEmpty()) {
+                edtFullName.setError("Vui long nhap fullname!");
+            }
+            if (hireDate.isEmpty()) {
+                edtHireDate.setError("Vui long nhap hire date!");
+            }
+            try {
+                salary = Double.parseDouble(salaryStr);
+            } catch (NumberFormatException e) {
+                edtSalary.setError("Vui long nhap salary hop le!");
+            }
+            if(!fullName.isEmpty() && !hireDate.isEmpty() && !salaryStr.isEmpty()){
+                Employee employee = new Employee(0, fullName, hireDate, salary);
+                presenter.addEmployee(employee);
+            }else{
+                failedCRUD();
+            }
+
+
         });
 
-        searchButton.setOnClickListener(v -> {
-            String fullName = fullNameEditText.getText().toString();
-            String hireDate = hireDateEditText.getText().toString();
-            double salary = salaryEditText.getText().toString().isEmpty() ? 0.0 :
-                    Double.parseDouble(salaryEditText.getText().toString());
+        searchBtn.setOnClickListener(v -> {
+            String fullName = edtFullName.getText().toString();
+            String hireDate = edtHireDate.getText().toString();
+            double salary = edtSalary.getText().toString().isEmpty() ? 0.0 :
+                    Double.parseDouble(edtSalary.getText().toString());
+            if (fullName.isEmpty() && hireDate.isEmpty() && salary == 0.0) {
+                presenter.getAllEmployees();
+            } else {
+                presenter.searchEmployees(fullName, hireDate, salary);
+            }
 
-            presenter.searchEmployees(fullName, hireDate, salary);
         });
 
-        //presenter.getAllEmployees();
     }
 
     @Override
@@ -78,20 +98,23 @@ public class EmployeeActivity extends AppCompatActivity implements EmployeeView 
 
     @Override
     public void employeeAdded() {
-        Toast.makeText(this, "Employee added successfully", Toast.LENGTH_SHORT).show();
-        presenter.getAllEmployees(); // Refresh data after adding
+        Toast.makeText(this, "Them employee thanh cong", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void employeeUpdated() {
-        Toast.makeText(this, "Employee updated successfully", Toast.LENGTH_SHORT).show();
-        presenter.getAllEmployees(); // Refresh data after updating
+        Toast.makeText(this, "Sua employee thanh cong", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void employeeDeleted() {
-        Toast.makeText(this, "Employee deleted successfully", Toast.LENGTH_SHORT).show();
-        presenter.getAllEmployees(); // Refresh data after deleting
+        Toast.makeText(this, "Xoa employee thanh cong", Toast.LENGTH_SHORT).show();
+        presenter.getAllEmployees();
+    }
+
+    @Override
+    public void failedCRUD() {
+        Toast.makeText(this, "That bai", Toast.LENGTH_SHORT).show();
     }
 }
 

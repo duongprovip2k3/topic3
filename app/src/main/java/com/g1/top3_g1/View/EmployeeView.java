@@ -6,8 +6,11 @@ import java.util.List;
 
 public interface EmployeeView {
     void showEmployees(List<Employee> employees);
+
     void employeeAdded();
     void employeeUpdated();
     void employeeDeleted();
+
+    void failedCRUD();
 }
 

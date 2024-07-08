@@ -12,7 +12,7 @@ import com.g1.top3_g1.Model.Employee;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbHelper extends SQLiteOpenHelper {
+public class DB extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "EmployeeDatabase";
     private static final int DATABASE_VERSION = 1;
 
@@ -23,7 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String COLUMN_HIRE_DATE = "hire_date";
     private static final String COLUMN_SALARY = "salary";
 
-    public DbHelper(Context context) {
+    public DB(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -58,27 +58,8 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    //tim kiem
-    public Employee getEmployee(int id) {
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_EMPLOYEE, new String[] { COLUMN_ID,
-                        COLUMN_FULL_NAME, COLUMN_HIRE_DATE, COLUMN_SALARY }, COLUMN_ID + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        Employee employee = new Employee();
-        employee.setId(Integer.parseInt(cursor.getString(0)));
-        employee.setFullName(cursor.getString(1));
-        employee.setHireDate(cursor.getString(2));
-        employee.setSalary(cursor.getDouble(3));
-
-        cursor.close();
-        return employee;
-    }
-
-    // Get all employees
+    // lay tat employees
     public List<Employee> getAllEmployees() {
         List<Employee> employeeList = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_EMPLOYEE;
@@ -102,7 +83,6 @@ public class DbHelper extends SQLiteOpenHelper {
         return employeeList;
     }
 
-    // Update employee record
     public int updateEmployee(Employee employee) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -115,7 +95,6 @@ public class DbHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(employee.getId()) });
     }
 
-    // Delete employee record
     public void deleteEmployee(Employee employee) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_EMPLOYEE, COLUMN_ID + " = ?",
@@ -123,7 +102,6 @@ public class DbHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Search employees
     public List<Employee> searchEmployees(String fullName, String hireDate, double salary) {
         List<Employee> employeeList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_EMPLOYEE + " WHERE ";
@@ -137,11 +115,9 @@ public class DbHelper extends SQLiteOpenHelper {
         if(salary != 0.0) {
             conditions.add(COLUMN_SALARY + "=" + salary);
         }
-        if (conditions.isEmpty()) {
-            selectQuery = "SELECT * FROM " + TABLE_EMPLOYEE;
-        } else {
-            selectQuery += TextUtils.join(" AND ", conditions);
-        }
+
+        selectQuery += TextUtils.join(" AND ", conditions);
+
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

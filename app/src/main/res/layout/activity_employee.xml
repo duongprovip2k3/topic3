@@ -6,54 +6,40 @@
 
     <LinearLayout
         android:id="@+id/input_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="16dp">
+        style="@style/itemLayout"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Full Name"
-            android:layout_marginEnd="8dp">
+            style="@style/TextInputLayoutOutlinedBox"
+            android:hint="@string/full_name">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_full_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                style="@style/itemLayout"
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Hire Date"
-            android:layout_marginEnd="8dp">
+            style="@style/TextInputLayoutOutlinedBox"
+            android:hint="@string/hire_date">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_hire_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="date"/>
+                style="@style/itemLayout"
+                android:inputType="date" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Salary">
+            style="@style/TextInputLayoutOutlinedBox"
+            android:hint="@string/salary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_salary"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"/>
+                style="@style/itemLayout"
+                android:inputType="numberDecimal" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,9 +47,8 @@
 
 
     <LinearLayout
+        style="@style/itemLayout"
         android:id="@+id/button_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_below="@id/input_container"
@@ -71,16 +56,12 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_add"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/itemLayoutBtn"
             android:text="Add"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_search"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/itemLayoutBtn"
             android:text="Search"
             android:layout_marginStart="16dp"/>
 
@@ -88,14 +69,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        style="@style/atvRecyclerView"
         android:layout_below="@id/button_container"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="3" />
+        app:spanCount="1" />
 
 </RelativeLayout>

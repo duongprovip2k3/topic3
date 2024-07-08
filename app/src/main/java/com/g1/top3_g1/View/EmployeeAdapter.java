@@ -1,9 +1,11 @@
 package com.g1.top3_g1.View;
+
 import android.view.View;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,20 +38,29 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     @Override
     public void onBindViewHolder(@NonNull EmployeeViewHolder holder, int position) {
         Employee employee = employeeList.get(position);
-        holder.fullNameTextView.setText(employee.getFullName());
-        holder.hireDateTextView.setText(employee.getHireDate());
-        holder.salaryTextView.setText(String.valueOf(employee.getSalary()));
+        holder.idTextView.setText(String.valueOf(employee.getId()));
+        holder.edtFullName.setText(employee.getFullName());
+        holder.edtHireDate.setText(employee.getHireDate());
+        holder.edtSalary.setText(String.format("%.0f", employee.getSalary()));
 
-        holder.editButton.setOnClickListener(v -> {
-            if (presenter != null) {
-                presenter.updateEmployee(employee);
+        holder.edtBtn.setOnClickListener(v -> {
+            boolean canEdt = holder.edtFullName.isEnabled();
+            holder.edtFullName.setEnabled(!canEdt);
+            holder.edtHireDate.setEnabled(!canEdt);
+            holder.edtSalary.setEnabled(!canEdt);
+
+            if(canEdt){
+            employee.setFullName(holder.edtFullName.getText().toString());
+            employee.setHireDate(holder.edtHireDate.getText().toString());
+            employee.setSalary(Double.parseDouble(holder.edtSalary.getText().toString()));
+            presenter.updateEmployee(employee);
             }
+
         });
 
-        holder.deleteButton.setOnClickListener(v -> {
-            if (presenter != null) {
-                presenter.deleteEmployee(employee);
-            }
+        holder.delBtn.setOnClickListener(v -> {
+            presenter.deleteEmployee(employee);
+
         });
     }
 
@@ -65,16 +76,18 @@ public class EmployeeAdapter extends RecyclerView.Adapter<EmployeeAdapter.Employ
     }
 
     public static class EmployeeViewHolder extends RecyclerView.ViewHolder {
-        TextView fullNameTextView, hireDateTextView, salaryTextView;
-        Button editButton, deleteButton;
+        EditText edtFullName, edtHireDate, edtSalary;
+        TextView idTextView;
+        Button edtBtn, delBtn;
 
         public EmployeeViewHolder(@NonNull View itemView) {
             super(itemView);
-            fullNameTextView = itemView.findViewById(R.id.text_view_full_name);
-            hireDateTextView = itemView.findViewById(R.id.text_view_hire_date);
-            salaryTextView = itemView.findViewById(R.id.text_view_salary);
-            editButton = itemView.findViewById(R.id.button_edit);
-            deleteButton = itemView.findViewById(R.id.button_delete);
+            idTextView = itemView.findViewById(R.id.text_view_id);
+            edtFullName = itemView.findViewById(R.id.edit_text_full_name);
+            edtHireDate = itemView.findViewById(R.id.edit_text_hire_date);
+            edtSalary = itemView.findViewById(R.id.edit_text_salary);
+            edtBtn = itemView.findViewById(R.id.button_edit);
+            delBtn = itemView.findViewById(R.id.button_delete);
         }
     }
 }

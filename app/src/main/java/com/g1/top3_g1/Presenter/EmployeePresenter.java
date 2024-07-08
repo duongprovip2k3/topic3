@@ -8,6 +8,7 @@ public interface EmployeePresenter {
     void addEmployee(Employee employee);
     void updateEmployee(Employee employee);
     void deleteEmployee(Employee employee);
+
 }
 
 
